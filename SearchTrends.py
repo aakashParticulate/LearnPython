@@ -1,8 +1,6 @@
 
 # coding: utf-8
 
-# In[32]:
-
 import pandas as pd
 import matplotlib.pyplot as plt
 import numpy.random as np
@@ -10,10 +8,6 @@ import sys
 import matplotlib.dates as mdates
 import os
 
-get_ipython().magic(u'matplotlib inline')
-
-
-# In[ ]:
 
 
 # The Following Function is to collect the names of all the .csv files 
@@ -21,8 +15,6 @@ def find_csv_filenames(path_to_dir, suffix=".csv"):
     filenames = os.listdir(path_to_dir)
     return [ filename for filename in filenames if filename.endswith( suffix ) ]
 
-
-# In[ ]:
 
 # Folder where all the csv files are present
 path = os.getcwd();
@@ -60,24 +52,21 @@ for name in filenames:
             ax = df.plot(x=df[time],figsize=(15,5))
             fig = ax.get_figure()
             filename = scientist
+            # If file already exist append a 1.
+            postpend = 1
+            org_filename = filename
+            while os.path.exists(os.path.join(plots_path, "{}.png".format(filename))):
+                filename = "{0}{1}".format(org_filename, postpend)
+                postpend += 1
             fig.savefig(os.path.join(plots_path, "{}.png".format(filename)))
-            plt.clf()
+            plt.close(fig)
     except ValueError as e:
         e.message
-        print str(name)
-        plt.clf()
+        print "error at {}".format(name)
     except IndexError as e:
         e.message
-        print str(name)
-        plt.clf()
+        print "error at {}".format(name)
     except Exception as e:
         e.args
-        print str(name)
-        plt.clf()
+        print "error at {}".format(name)
 print "Done"
-
-
-# In[ ]:
-
-
-
